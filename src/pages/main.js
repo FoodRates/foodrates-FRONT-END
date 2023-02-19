@@ -8,23 +8,55 @@ const URL =
 const Main = () => {
   const [data, setData] = useState(null);
 
+  useEffect(() => {
+    fetchMenus();
+  }, []);
+
   const fetchMenus = async () => {
     try {
       const response = await axios.get(URL);
-
-      setData(response.data);
+      setData(response.data.data);
     } catch (error) {
       console.log("Error occurred :(", error);
       throw error;
     }
   };
-  useEffect(() => {
-    fetchMenus();
-  }, []);
+
+  const innerRenderer = (args, index) => {
+    const [data, section] = args;
+    return (
+      <div key={index} className={styles.innerBox}>
+        <p>{section}</p>
+        <div>
+          {data.map((item, index) => {
+            return (
+              <div key={index} className={styles.card}>
+                <p>{item.title}</p>
+                <p>{item.price}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const displayMenus = () => {
+    const menuCategories = Object.keys(data[0]?.menu);
+    const menuList = [];
+
+    for (const item of menuCategories) {
+      menuList.push([data[0]?.menu[item], item]);
+    }
+
+    return menuList.map((item, index) => innerRenderer(item, index));
+  };
+
   return (
     <main className={styles.main}>
-      {data && console.log("data here: ", data)}
       <p>This is a Main landing page.</p>
+
+      {data && displayMenus()}
     </main>
   );
 };

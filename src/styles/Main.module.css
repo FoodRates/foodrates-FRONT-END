@@ -1,8 +1,26 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 70vw;
+}
+
+.main .innerBox {
+  margin: 10px;
+  background-color: aliceblue;
+  padding: 5px;
+}
+
+.innerBox p {
+  color: black;
 }
