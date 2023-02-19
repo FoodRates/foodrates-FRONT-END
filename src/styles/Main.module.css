@@ -10,9 +10,16 @@
 .card {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  width: 70vw;
+  width: 60vw;
+  padding: 5px;
+  border-color: 1px solid lightblue;
+  margin: 2px;
+}
+
+.card div {
+  width: 33%;
 }
 
 .main .innerBox {
@@ -23,4 +30,14 @@
 
 .innerBox p {
   color: black;
+}
+
+.main .menuSection {
+  font-size: 22px;
+}
+
+.main .price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

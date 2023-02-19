@@ -29,13 +29,22 @@ const Main = () => {
     const [data, section] = args;
     return (
       <div key={index} className={styles.innerBox}>
-        <p>{section}</p>
+        <p className={styles.menuSection}>{section}</p>
+        <br />
         <div>
           {data.map((item, index) => {
             return (
               <div key={index} className={styles.card}>
-                <p>{item.title}</p>
-                <p>{item.price}</p>
+                <div>
+                  <p>{item.title}</p>
+                  <p>{item.description}</p>
+                </div>
+                <div className={styles.price}>
+                  <p>{item.price}</p>
+                </div>
+                <div>
+                  <button>Edit</button>
+                </div>
               </div>
             );
           })}
