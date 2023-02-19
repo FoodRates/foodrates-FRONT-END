@@ -7,6 +7,7 @@ const URL =
 
 const Main = () => {
   const [data, setData] = useState(null);
+  const [restaurantInfo, setRestaurantInfo] = useState(null);
 
   useEffect(() => {
     fetchMenus();
@@ -15,7 +16,9 @@ const Main = () => {
   const fetchMenus = async () => {
     try {
       const response = await axios.get(URL);
+      const [restaurantInfo] = response.data.data;
       setData(response.data.data);
+      setRestaurantInfo(restaurantInfo);
     } catch (error) {
       console.log("Error occurred :(", error);
       throw error;
@@ -52,10 +55,26 @@ const Main = () => {
     return menuList.map((item, index) => innerRenderer(item, index));
   };
 
+  const venueInfo = (data) => {
+    const { City, Location, Name, PhoneNumber, State, Zipcode } = data;
+
+    return (
+      <div>
+        <span>{Name}</span>
+        <div>
+          <span>{Location}</span>
+        </div>
+        <span>{City}</span>
+        <span>{State}</span>
+        <span>{Zipcode}</span>
+        <div>{PhoneNumber}</div>
+      </div>
+    );
+  };
   return (
     <main className={styles.main}>
       <p>This is a Main landing page.</p>
-
+      {restaurantInfo && venueInfo(restaurantInfo.restaurantInfo)}
       {data && displayMenus()}
     </main>
   );
