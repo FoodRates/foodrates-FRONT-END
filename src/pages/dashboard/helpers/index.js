@@ -11,6 +11,8 @@ export const EditMode = ({ title, description, price, onSave, onChange }) => (
     />
     <input placeholder="price" name="price" value={price} onChange={onChange} />
 
-    <button onClick={onSave}>Save</button>
+    <div>
+      <button onClick={onSave}>Save</button>
+    </div>
   </div>
 );

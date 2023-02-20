@@ -7,6 +7,8 @@ import { EditMode } from "../dashboard/helpers";
 const URL =
   "https://ixuwvr2560.execute-api.us-west-1.amazonaws.com/dev/allmenus";
 
+const vendorId = "x4c-r5q";
+const URL_FOR_VENDOR = `https://ixuwvr2560.execute-api.us-west-1.amazonaws.com/dev/menu/${vendorId}`;
 const Main = () => {
   const [data, setData] = useState(null);
   const [restaurantInfo, setRestaurantInfo] = useState(null);
@@ -18,8 +20,8 @@ const Main = () => {
 
   const fetchMenus = async () => {
     try {
-      const response = await axios.get(URL);
-      const [restaurantInfo] = response.data.data;
+      const response = await axios.get(URL_FOR_VENDOR);
+      const { restaurantInfo } = response?.data.data;
       setData(response.data.data);
       setRestaurantInfo(restaurantInfo);
     } catch (error) {
@@ -32,7 +34,7 @@ const Main = () => {
   };
 
   const onSave = () => {
-    console.log("eidtMode", editMode);
+    console.log("eidtMode", editMode, "\n data: ", data);
   };
 
   const handleOnChange = (e) => {
@@ -84,11 +86,11 @@ const Main = () => {
   };
 
   const displayMenus = () => {
-    const menuCategories = Object.keys(data[0]?.menu);
+    const menuCategories = Object.keys(data?.menu);
     const menuList = [];
 
     for (const item of menuCategories) {
-      menuList.push([data[0]?.menu[item], item]);
+      menuList.push([data?.menu[item], item]);
     }
 
     return menuList.map((item, index) => innerRenderer(item, index));
@@ -113,7 +115,7 @@ const Main = () => {
   return (
     <main className={styles.main}>
       <p>This is a Main landing page.</p>
-      {restaurantInfo && venueInfo(restaurantInfo.restaurantInfo)}
+      {restaurantInfo && venueInfo(restaurantInfo)}
       {data && displayMenus()}
     </main>
   );
