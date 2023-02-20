@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "@/styles/Main.module.css";
 
+import { EditMode } from "../dashboard/helpers";
+
 const URL =
   "https://ixuwvr2560.execute-api.us-west-1.amazonaws.com/dev/allmenus";
 
 const Main = () => {
   const [data, setData] = useState(null);
   const [restaurantInfo, setRestaurantInfo] = useState(null);
+  const [editMode, setEditMode] = useState([]);
 
   useEffect(() => {
     fetchMenus();
@@ -20,9 +23,24 @@ const Main = () => {
       setData(response.data.data);
       setRestaurantInfo(restaurantInfo);
     } catch (error) {
-      console.log("Error occurred :(", error);
       throw error;
     }
+  };
+
+  const handleEdit = (data) => {
+    setEditMode(data);
+  };
+
+  const onSave = () => {
+    console.log("eidtMode", editMode);
+  };
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setEditMode((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const innerRenderer = (args, index) => {
@@ -35,16 +53,28 @@ const Main = () => {
           {data.map((item, index) => {
             return (
               <div key={index} className={styles.card}>
-                <div>
-                  <p>{item.title}</p>
-                  <p>{item.description}</p>
-                </div>
-                <div className={styles.price}>
-                  <p>{item.price}</p>
-                </div>
-                <div>
-                  <button>Edit</button>
-                </div>
+                {item.id === editMode.id && Object.keys(editMode).length ? (
+                  <EditMode
+                    title={editMode.title}
+                    description={editMode.description}
+                    price={editMode.price}
+                    onSave={onSave}
+                    onChange={handleOnChange}
+                  />
+                ) : (
+                  <>
+                    <div>
+                      <p>{item.title}</p>
+                      <p>{item.description}</p>
+                    </div>
+                    <div className={styles.price}>
+                      <p>{item.price}</p>
+                    </div>
+                    <div>
+                      <button onClick={() => handleEdit(item)}>Edit</button>
+                    </div>
+                  </>
+                )}
               </div>
             );
           })}
